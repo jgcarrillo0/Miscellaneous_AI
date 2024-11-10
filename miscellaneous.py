@@ -31,8 +31,8 @@ def plot_confusion_matrix(y_true, y_pred, classes, normalize=False):
         Etiquetas prdichas.
     classes : list
         Lista de valores/etiquetas de la variable objetivo.
-    normalize : Bool, optional
-        Muesta los valores en porcentaje.
+    normalize : Bool, optional- Default=False
+        Muesta los valores en porcentaje. 
 
     Returns
     -------
@@ -70,7 +70,7 @@ def plot_roc_curve(model, test_x, test_y, class_positive=1):
         Conjunto de datos de pruebas, variables predictoras.
     test_y : array
         Conjunto de datos de pruebas, variables objetivo.
-    class_positive : int o str, optional
+    class_positive : int o str, optional- Default=1
         Valor de la clase positiva.
 
     Returns
@@ -105,7 +105,7 @@ def plot_roc_curve(model, test_x, test_y, class_positive=1):
     except Exception as ex:
         print("Se ha presentado una excepción", type(ex))
         
-def plot_precision_recall_curve(model, test_x, test_y):
+def plot_precision_recall_curve(model, test_x, test_y, class_positive=1):
     '''
     Genera la gráfica de la curva de precision vs recall
 
@@ -117,6 +117,8 @@ def plot_precision_recall_curve(model, test_x, test_y):
         Conjunto de datos de pruebas, variables predictoras.
     test_y : array
         Conjunto de datos de pruebas, variables objetivo.
+    class_positive : int o str, optional- Default=1  
+        Valor de la clase positiva.
 
     Returns
     -------
