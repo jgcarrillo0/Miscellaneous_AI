@@ -68,7 +68,7 @@ def plot_roc_curve(model, test_x, test_y, class_positive=1):
         Modelo entrenado.
     test_X : array
         Conjunto de datos de pruebas, variables predictoras.
-    test_y : TYPE
+    test_y : array
         Conjunto de datos de pruebas, variables objetivo.
     class_positive : int o str, optional
         Valor de la clase positiva.
@@ -104,4 +104,50 @@ def plot_roc_curve(model, test_x, test_y, class_positive=1):
         plt.show()
     except Exception as ex:
         print("Se ha presentado una excepción", type(ex))
+        
+def plot_precision_recall_curve(model, test_x, test_y):
+    '''
+    Genera la gráfica de la curva de precision vs recall
 
+    Parameters
+    ----------
+    model : model
+        Modelo entrenado.
+    test_x : array
+        Conjunto de datos de pruebas, variables predictoras.
+    test_y : array
+        Conjunto de datos de pruebas, variables objetivo.
+
+    Returns
+    -------
+    None.
+    '''
+    try:
+        y_score = model.predict_proba(test_x)[:, 1]
+    except:
+        y_score = model.decision_function(test_x)
+    try:
+        # Calcula los valores de predicción, recall y umbrales
+        precision, recall, thresholds = precision_recall_curve(test_y, y_score)
+        # Encuentra el umbral que maximiza el área bajo la curva
+        closest_zero = np.argmin(np.abs(thresholds))
+        # Extrae los valores de precisión y recall correspondientes al umbral óptimo
+        closest_zero_p = precision[closest_zero]
+        closest_zero_r = recall[closest_zero]
+        # Establece el area de trazado
+        plt.figure(figsize=(8, 5))
+        plt.plot(precision, recall, lw=1.5, label='Precision-Recall Curve')
+        plt.plot(closest_zero_p, closest_zero_r, 'o', markersize=12,
+                 fillstyle='none', c='r', mew=3, label=f'Thresholds: {closest_zero}')
+        # Ajuste de limites
+        plt.xlim([-0.01, 1.01])
+        plt.ylim([-0.01, 1.01])
+        # Titulos y etiquetas
+        plt.title('Curva Precisión-Recall')
+        plt.legend(loc='lower right', fontsize=13)
+        plt.xlabel('Precision')
+        plt.ylabel('Recall')
+        plt.tight_layout()
+        plt.show()
+    except Exception as ex:
+        print("Se ha presentado una excepción", type(ex))
