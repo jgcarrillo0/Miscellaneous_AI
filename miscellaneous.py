@@ -88,7 +88,7 @@ def plot_roc_curve(model, test_x, test_y, class_positive=1):
         # Calcula el area bajo la curva
         roc_auc = auc(fpr, tpr)
         # Establece el area de trazado
-        plt.figure(figsize=(8, 5))
+        plt.figure(figsize=(10, 5))
         plt.plot(fpr, tpr, lw=1.5, label=f'ROC curve (area = {roc_auc:.2f})')
         # Genera la linea del 50%
         plt.plot([0, 1], [0, 1], color='navy', lw=1.5, linestyle='--')
@@ -137,7 +137,7 @@ def plot_precision_recall_curve(model, test_x, test_y, class_positive=1):
         closest_zero_p = precision[closest_zero]
         closest_zero_r = recall[closest_zero]
         # Establece el area de trazado
-        plt.figure(figsize=(8, 5))
+        plt.figure(figsize=(10, 5))
         plt.plot(precision, recall, lw=1.5, label='Precision-Recall Curve')
         plt.plot(closest_zero_p, closest_zero_r, 'o', markersize=12,
                  fillstyle='none', c='r', mew=3, label=f'Thresholds: {closest_zero}')
@@ -153,3 +153,38 @@ def plot_precision_recall_curve(model, test_x, test_y, class_positive=1):
         plt.show()
     except Exception as ex:
         print("Se ha presentado una excepción", type(ex))
+        
+def plot_importances_modelo(model, set_x):
+    '''
+    Genera una gráfica que muestra las características más importantes del modelo.
+    
+    Parameters
+    ----------
+    model : model
+        Modelo entrenado.
+    set_x : array
+        Conjunto de variables predictoras
+
+    Returns
+    -------
+    None.
+    '''
+    # Extrae el nivel de importancia de las caracteristicas
+    importances = model.feature_importances_
+    # Crear un DataFrame con las características y sus importancias
+    feature_importances_df = pd.DataFrame({
+        'Feature': set_x.columns,
+        'Importance': importances})
+    # Ordenar por la importancia en orden descendente
+    feature_importances_df = feature_importances_df.sort_values(by='Importance', ascending=False)
+    # Obtener la paleta de colores y revertirla
+    palette = sns.color_palette('Blues_d', n_colors=len(feature_importances_df))
+    # Invierte la paleta
+    reversed_palette = palette[::-1]
+    # Establece el area de trazado
+    plt.figure(figsize=(10, 6))
+    sns.barplot(x='Importance', y='Feature', data=feature_importances_df, 
+                hue='Feature', palette=reversed_palette, dodge=False, legend=False)
+    # Titulos y etiquetas
+    plt.title('Importancia de las Características')
+    plt.show()
