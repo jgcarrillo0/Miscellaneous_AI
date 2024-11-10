@@ -154,7 +154,7 @@ def plot_precision_recall_curve(model, test_x, test_y, class_positive=1):
     except Exception as ex:
         print("Se ha presentado una excepción", type(ex))
         
-def plot_importances_modelo(model, set_x):
+def plot_importances_model(model, set_x):
     '''
     Genera una gráfica que muestra las características más importantes del modelo.
     
