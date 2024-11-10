@@ -169,22 +169,25 @@ def plot_importances_model(model, set_x):
     -------
     None.
     '''
-    # Extrae el nivel de importancia de las caracteristicas
-    importances = model.feature_importances_
-    # Crear un DataFrame con las características y sus importancias
-    feature_importances_df = pd.DataFrame({
-        'Feature': set_x.columns,
-        'Importance': importances})
-    # Ordenar por la importancia en orden descendente
-    feature_importances_df = feature_importances_df.sort_values(by='Importance', ascending=False)
-    # Obtener la paleta de colores y revertirla
-    palette = sns.color_palette('Blues_d', n_colors=len(feature_importances_df))
-    # Invierte la paleta
-    reversed_palette = palette[::-1]
-    # Establece el area de trazado
-    plt.figure(figsize=(10, 6))
-    sns.barplot(x='Importance', y='Feature', data=feature_importances_df, 
-                hue='Feature', palette=reversed_palette, dodge=False, legend=False)
-    # Titulos y etiquetas
-    plt.title('Importancia de las Características')
-    plt.show()
+    try:
+        # Extrae el nivel de importancia de las caracteristicas
+        importances = model.feature_importances_
+        # Crear un DataFrame con las características y sus importancias
+        feature_importances_df = pd.DataFrame({
+            'Feature': set_x.columns,
+            'Importance': importances})
+        # Ordenar por la importancia en orden descendente
+        feature_importances_df = feature_importances_df.sort_values(by='Importance', ascending=False)
+        # Obtener la paleta de colores y revertirla
+        palette = sns.color_palette('Blues_d', n_colors=len(feature_importances_df))
+        # Invierte la paleta
+        reversed_palette = palette[::-1]
+        # Establece el area de trazado
+        plt.figure(figsize=(10, 6))
+        sns.barplot(x='Importance', y='Feature', data=feature_importances_df, 
+                    hue='Feature', palette=reversed_palette, dodge=False, legend=False)
+        # Titulos y etiquetas
+        plt.title('Importancia de las Características')
+        plt.show()
+    except Exception as ex:
+        print("Se ha presentado una excepción", type(ex))
